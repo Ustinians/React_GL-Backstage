@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import "./index.less";
 import App from './App';
 // 引入Antd样式
-import 'antd/dist/antd.variable.min.css';
+import 'antd/dist/antd.css';
+import './index.css';
 
 ReactDOM.render(
   // StrictMode 开启React严格模式
