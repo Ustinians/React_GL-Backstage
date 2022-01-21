@@ -59,6 +59,7 @@ export default {
         {
             id: "005",
             title: "图形图表",
+            path: "/charts",
             icon: <AreaChartOutlined />,
             child: [
                 {

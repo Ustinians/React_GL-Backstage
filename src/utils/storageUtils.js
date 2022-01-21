@@ -13,7 +13,8 @@ export default {
     // 读取user
     getUser(){
         // return JSON.parse(localStorage.getItem(USER_KEY) || "{}");
-        return store.get(USER_KEY);
+        // PS: 这里曾经少写了一个 "|| {}"导致/login登陆不进去...ψ(._. )>
+        return store.get(USER_KEY) || {};
     },
     // 删除user
     removeUser(){

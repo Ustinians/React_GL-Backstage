@@ -75,6 +75,128 @@
 
 以同步编码(没有回调函数了)方式实现异步流程 
 
+### CSS伪元素实现样式
+
+效果如图
+
+![image-20220121102604755](C:\Users\admin\AppData\Roaming\Typora\typora-user-images\image-20220121102604755.png)
+
+代码如下
+
+```css
+&::after{
+    position: absolute;
+    content: '';
+    // 设置定位
+    right: 50%;
+    top: 100%;
+    transform: translateX(50%);
+    border-top: 20px solid #fff;
+    border-right: 20px solid transparent; // 透明化
+    border-left: 20px solid transparent; // 透明化
+    border-bottom: 20px solid transparent; // 透明化
+}
+```
+
+### 通过当前地点获取天气
+
+1. 引入高德地图
+
+   ```html
+   <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=___"></script> 
+   ```
+
+2. 实现获取天气的功能
+
+   ```js
+   var map = new window.AMap.Map('container', {
+       zoom: 10
+   })
+   console.log(map.getCenter());
+   let _this = this;
+   await window.AMap.plugin('AMap.Weather', () => {
+       //创建天气查询实例
+       var weather = new window.AMap.Weather();
+       //执行实时天气信息查询
+       weather.getLive("你所在的地址", function (err, data) {
+           console.log(err, data);
+           if (!err) {
+               // 在render挂载之前获取到实时天气
+               _this.setState({ weather: data.weather, address: data.province + "省" + data.city })
+           }
+           else {
+               message.error('获取天气信息失败')
+           }
+       });
+   });
+   ```
+
+### 获取当前的时间
+
+编写dateUtils模块
+
+```js
+export function formateDate(time){
+    if(!time) return ''
+    let date = new Date(time);
+    // 返回当前时间
+    return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+}
+```
+
+设置当前时间
+
+```jsx
+state = {
+    nowTime: formateDate(Date.now())
+  }
+```
+
+在项目刚挂在完毕的时候打开定时器
+
+```jsx
+componentDidMount(){
+    this.timer = setInterval(()=>{
+        this.setState({nowTime:formateDate(Date.now())})
+    },1000)
+}
+```
+
+在项目关闭之前关闭計時器
+
+```jsx
+componentWillUnmount(){
+    clearInterval(this.timer);
+}
+```
+
+### 获取当前路径对应的标题
+
+```jsx
+// 获取当前路径对应的标题
+getNowTitle = () => {
+    let title;
+    const {pathname} = this.props.location;
+    // 遍历找到对应的标题
+    memoryUtils.menu.forEach(item => {
+        if(item.path && item.path === pathname){
+            title = item.title;
+        }
+        if(item.child){
+            // 如果该菜单项下面有子菜单项,遍历子菜单项
+            // 查找有没有对应的菜单项
+            const cItem = item.child.find(cItem => pathname.indexOf(cItem.path) === 0);
+            if(cItem){
+                title = cItem.title;
+            }
+        }
+    })
+    return title;
+}
+```
+
+
+
 ## 后台应用
 
 

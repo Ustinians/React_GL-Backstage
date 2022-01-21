@@ -28,8 +28,8 @@ export default class Admin extends Component {
         // 如果memoryUtils中没有存储user ==> 当前没有登陆
         if (!user || !user._id) {
             // 如果当前没有登陆,自动跳转到登陆界面
-            // this.props.history.replace("/login");
-            return <Redirect to="/login" />
+            this.props.history.replace("/login");
+            // return <Redirect to="/login" />
         }
         return (
             <div className='admin'>
@@ -42,7 +42,7 @@ export default class Admin extends Component {
                         {/* 头部 */}
                         <Header></Header>
                         {/* 中间部分 */}
-                        <Content style={{backgroundColor:"#fff"}}>
+                        <Content style={{backgroundColor:"#fff",margin:"20px"}}>
                             <Switch>
                                 <Route path="/home" component={Home}></Route>
                                 <Route path="/category" component={Category}></Route>

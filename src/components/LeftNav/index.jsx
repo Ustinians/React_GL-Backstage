@@ -4,18 +4,6 @@ import { Link, withRouter } from "react-router-dom";
 import "./index.css"
 
 import { Menu } from 'antd';
-// import {
-//   HomeOutlined,
-//   ShoppingOutlined,
-//   UnorderedListOutlined,
-//   ShoppingCartOutlined,
-//   UserOutlined,
-//   SmileOutlined,
-//   AreaChartOutlined,
-//   BarChartOutlined,
-//   LineChartOutlined,
-//   PieChartOutlined
-// } from '@ant-design/icons';
 
 // 引入需要的图片
 import logo from "../../assets/images/logo.png";
@@ -26,6 +14,10 @@ const { SubMenu } = Menu;
 
 class LeftNav extends Component {
   // 展示菜单列表
+  /**
+   * 根据menu的数据数组生成对应的标签数组
+   * 使用 map() + 递归
+   */
   showMenuList = (menu) => {
     return menu.map(item => {
       // 如果没有子菜单项
@@ -37,6 +29,11 @@ class LeftNav extends Component {
         );
       }
       else{
+        const cItem = item.child.find(cItem => cItem.path === this.props.location.pathname);
+        if(cItem){
+          // 如果存在,说明当前item所对应的子列表需要打开
+          this.openKey = item.id;
+        }
         return (
           <SubMenu key={item.id} icon={item.icon} title={item.title}>
             {this.showMenuList(item.child)}
@@ -44,6 +41,35 @@ class LeftNav extends Component {
         );
       }
     })
+  }
+  /**
+   * 根据menu的数据数组生成对应的标签数组
+   * 使用 reduce() + 递归
+   */
+  /*
+  showMenuList = (menu) => {
+    return menu.reduce((pre,item) => {
+      // 向pre添加<Menu.Item>或者<SubMenu>
+      if(!item.child){
+        pre.push((
+          <Menu.Item key={item.path} icon={item.icon}>
+            <Link to={item.path}>{item.title}</Link>
+          </Menu.Item>
+        ))
+      }
+      else{
+        pre.push((
+          <SubMenu key={item.id} icon={item.icon} title={item.title}>
+            {this.showMenuList(item.child)}
+          </SubMenu>
+        ))
+      }
+      return pre;
+    },[])
+  }
+  */
+  UNSAFE_componentWillMount(){
+    this.menuNodes = this.showMenuList(memoryUtils.menu);
   }
   render() {
     // 获取当前路径
@@ -56,14 +82,14 @@ class LeftNav extends Component {
         </header>
         <div style={{ width: 200 }}>
           <Menu
-            defaultSelectedKeys={pathname}
-            // defaultOpenKeys={"002"}
+            selectedKeys={[pathname]}
+            defaultOpenKeys={[this.openKey]}
             mode="inline"
             theme="dark"
             inlineCollapsed={false}
           >
             {
-              this.showMenuList(memoryUtils.menu)
+              this.menuNodes
             }
           </Menu>
         </div>
