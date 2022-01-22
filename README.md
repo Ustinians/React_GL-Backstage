@@ -195,7 +195,31 @@ getNowTitle = () => {
 }
 ```
 
+### 退出登陆功能
 
+```jsx
+isExit = () => {
+    const _this = this;
+    Modal.confirm({
+        icon: <ExclamationCircleOutlined />,
+        content: "确定要退出吗ψ(._. )>",
+        onOk() {
+            console.log("用户退出了系统o(〃＾▽＾〃)o");
+            message.success("退出登录成功o(〃＾▽＾〃)o")
+            // 将内存中的user变为空
+            memoryUtils.user = {};
+            // 清除local中的数据
+            storageUtils.removeUser();
+            // 跳转到登陆界面
+            _this.props.history.replace("/login");
+        },
+        onCancel() {
+            const {username} = memoryUtils.user;
+            console.log(username,'取消了退出行为§(*￣▽￣*)§');
+        },
+    });
+}
+```
 
 ## 后台应用
 
