@@ -19,3 +19,21 @@ export const reqAddCategory = (categoryName,parentId) => ajax("/manage/category/
 
 // 更新分类
 export const reqUpdateCategory = ({categoryName,categoryId}) => ajax("/manage/category/update",{categoryName,categoryId},"POST");
+
+// 获取商品分页列表
+export const reqProducts = (pageNum,pageSize) => ajax("/manage/product/list",{pageNum,pageSize});
+
+// 搜索商品分页列表 (按名称搜索)/(按描述搜索)
+// searchType: 搜索的类型, productName/productDesc
+export const reqSearchProducts1 = (pageNum,pageSize,searchName,searchType) => ajax("/manage/product/search",{
+    pageNum,
+    pageSize,
+    [searchType]: searchName
+});
+// // 搜索商品分页列表 (按描述搜索)
+// export const reqSearchProducts2 = (pageNum,pageSize,searchName) => ajax("/manage/product/search",{
+//     pageNum,
+//     pageSize,
+//     productDesc: searchName
+// });
+
