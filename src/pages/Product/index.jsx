@@ -1,6 +1,7 @@
 // 商品管理的首页
 import React, { Component } from 'react';
 import {Switch,Route,Redirect} from "react-router-dom";
+import "./index.css"
 
 // 引入需要的路由组件
 import ProductHome from "./Home";

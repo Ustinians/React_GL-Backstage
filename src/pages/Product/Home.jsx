@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Card, Button, Select, Input, Table, message } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 
-import { reqProducts } from "../../api/index";
+import { reqProducts, reqSearchProducts, reqUpdateStatus } from "../../api/index";
 
 export default class ProductHome extends Component {
     state = {
@@ -16,6 +16,7 @@ export default class ProductHome extends Component {
     }
     // 初始化Table的列的数组
     initColumns = () => {
+        const _this = this;
         this.columns = [
             {
                 title: '商品名称',
@@ -35,13 +36,17 @@ export default class ProductHome extends Component {
             },
             {
                 title: "状态",
-                dataIndex: "status",
                 width: 100,
-                render: (status) => {
+                render: (product) => {
+                    const {status,_id} = product;
+                    const newStatus = status === 1 ? 2 : 1;
                     return (
                         <div>
-                            <Button type='primary'>下架</Button>
-                            <span>在售</span>
+                            <Button 
+                                type='primary' 
+                                onClick={() => _this.updateStatus(_id,newStatus)}
+                            >{status === 1 ? "下架" : "上架"}</Button>
+                            <span>{status === 1 ? "在售" : "已下架"}</span>
                         </div>
                     )
                 }
@@ -52,7 +57,10 @@ export default class ProductHome extends Component {
                 render: (product) => {
                     return (
                         <span>
-                            <a href='jacascript:;'>详情</a>
+                            <a 
+                                href='jacascript:;' 
+                                onClick={() => {this.props.history.push("/product/detail",{product})}} 
+                            >详情</a>
                             <br />
                             <a href='jacascript:;'>修改</a>
                         </span>
@@ -63,10 +71,19 @@ export default class ProductHome extends Component {
     }
     // 获取指定页码的列表数据显示
     getProducts = async (pageNum) => {
+        this.pageNum = pageNum; // 保存pageNum, 让其他方法可以看到
         this.setState({
-            loading: true
+            loading: true // 显示loading
         })
-        const result = await reqProducts(pageNum, 3);
+        let result;
+        const {searchName,searchType} = this.state;
+        if(searchName){
+            // 如果搜索框有内容,展示搜索后的内容
+            result = await reqSearchProducts({pageNum,pageSize:3,searchName,searchType});
+        }
+        else{
+            result = await reqProducts(pageNum, 3);
+        }
         this.setState({
             loading: false
         })
@@ -80,6 +97,18 @@ export default class ProductHome extends Component {
         }
         else {
             message.error()
+        }
+    }
+    // 更新商品状态(上架/下架)
+    updateStatus = async (id,status) => {
+        const result = await reqUpdateStatus(id,status);
+        // console.log(result);
+        if(result.status === 0){
+            message.success("更新商品状态成功");
+            this.getProducts(this.pageNum);
+        }
+        else{
+            message.error("更新商品状态失败");
         }
     }
     UNSAFE_componentWillMount() {
@@ -103,9 +132,9 @@ export default class ProductHome extends Component {
                 placeholder='关键字' 
                 style={{ width: 150, margin: "0 10px" }}
                 value={searchName}
-                onChange={value => this.setState({searchType:value})}
+                onChange={event => this.setState({searchName:event.target.value})}
             ></Input>
-            <Button type="primary">搜索</Button>
+            <Button type="primary" onClick={() => {this.getProducts("1")}}>搜索</Button>
         </div>)
         const extra = (
             <Button type="primary">

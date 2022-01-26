@@ -221,6 +221,12 @@ isExit = () => {
 }
 ```
 
+### React路由跳转时传参
+
+```jsx
+this.props.history.push(path,[state])
+```
+
 ## 后台应用
 
 
