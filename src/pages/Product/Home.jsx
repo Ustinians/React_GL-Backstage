@@ -62,7 +62,7 @@ export default class ProductHome extends Component {
                                 onClick={() => {this.props.history.push("/product/detail",{product})}} 
                             >详情</a>
                             <br />
-                            <a href='jacascript:;'>修改</a>
+                            <a href='jacascript:;' onClick={() => this.props.history.push("/product/addupdate",product)}>修改</a>
                         </span>
                     )
                 }
@@ -105,7 +105,7 @@ export default class ProductHome extends Component {
         // console.log(result);
         if(result.status === 0){
             message.success("更新商品状态成功");
-            this.getProducts(this.pageNum);
+            this.getProducts(this.pageNum); // 在更新状态之后,重新加载该页
         }
         else{
             message.error("更新商品状态失败");
@@ -137,7 +137,7 @@ export default class ProductHome extends Component {
             <Button type="primary" onClick={() => {this.getProducts("1")}}>搜索</Button>
         </div>)
         const extra = (
-            <Button type="primary">
+            <Button type="primary" onClick={() => this.props.history.push("/product/addupdate")}>
                 <PlusOutlined />
                 <span>添加商品</span>
             </Button>

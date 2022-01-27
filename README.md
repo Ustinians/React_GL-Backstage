@@ -227,6 +227,27 @@ isExit = () => {
 this.props.history.push(path,[state])
 ```
 
+### ProductDetail组件
+
+1. 读取商品数据 : `this.props.location.state.product`
+
+2. 显示商品数据 : `<Card> / List`
+
+3. 异步显示商品所属分类的名称
+
+   ```
+   pCategoryId==0 : 异步获取categoryId的分类名称
+   pCategoryId!=0 : 异步获取pCategoryId/categoryId的分类名称
+   ```
+
+4. `Promise.all([promise1,promise2])`
+
+   返回值是`promise`
+
+   异步得到的是所有`promise`的结果的数组
+
+   特点: 一次发多个请求,只有当所有请求都成功,才成功,并得到成功的数据,一旦有一个失败,就无法得到成功的数据
+
 ## 后台应用
 
 

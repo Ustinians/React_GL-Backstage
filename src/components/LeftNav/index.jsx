@@ -29,7 +29,9 @@ class LeftNav extends Component {
         );
       }
       else{
-        const cItem = item.child.find(cItem => cItem.path === this.props.location.pathname);
+        const path = this.props.location.pathname;
+        // 当路由路径中包含该路径,展开该列表
+        const cItem = item.child.find(cItem => path.indexOf(cItem.path) === 0);
         if(cItem){
           // 如果存在,说明当前item所对应的子列表需要打开
           this.openKey = item.id;
@@ -73,7 +75,11 @@ class LeftNav extends Component {
   }
   render() {
     // 获取当前路径
-    const {pathname} = this.props.location;
+    let {pathname} = this.props.location;
+    if(pathname.indexOf("/product") === 0){
+      // 当前请求的是商品或者其子路由
+      pathname = "/product";
+    }
     return <div className='left-nav'>
       <Link to="/home">
         <header className='left-nav-header'>
