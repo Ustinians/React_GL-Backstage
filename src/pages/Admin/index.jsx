@@ -33,7 +33,7 @@ export default class Admin extends Component {
         }
         return (
             <div className='admin'>
-                <Layout style={{height:"100%"}}>
+                <Layout style={{minHeight:"100%"}}>
                     <Sider>
                         {/* 左边导航栏部分 */}
                         <LeftNav></LeftNav>

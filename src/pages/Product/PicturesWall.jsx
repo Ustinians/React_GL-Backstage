@@ -1,7 +1,7 @@
 // 用于图片上传的组件
 import React, { Component } from 'react';
 
-import { Upload, Modal } from 'antd';
+import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 function getBase64(file) {
@@ -14,32 +14,29 @@ function getBase64(file) {
 }
 
 export default class PicturesWall extends Component {
-  state = {
-    previewVisible: false, // 标记是否显示大图预览界面Modal
-    previewImage: '',
-    previewTitle: '',
-    fileList: [
-      {
-        uid: '-1',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-xxx',
-        percent: 50,
-        name: 'image.png',
-        status: 'uploading',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-5',
-        name: 'image.png',
-        status: 'error',
-      },
-    ],
-  };
+  
+  constructor(props){
+    super(props);
+    let fileList = [];
+    // 如果传入了imgs属性
+    const {imgs} = this.props;
+    if(imgs && imgs.length > 0){
+      fileList = imgs.map((img,index) => ({
+        uid: -index,
+        name: img,
+        status: "done",
+        url: "http://localhost:5000/manage/img/upload" + img
+      }))
+    }
+    this.state = {
+      previewVisible: false, // 标记是否显示大图预览界面Modal
+      previewImage: '',
+      previewTitle: '',
+      fileList
+    };
+  }
 
+  // eslint-disable-next-line no-unreachable
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async file => {
@@ -56,8 +53,26 @@ export default class PicturesWall extends Component {
   // fileList: 所有已上传图片对象的数组
   // file: 当前操作的图片对象
   handleChange = ({ file, fileList }) => {
-    console.log(file,fileList);
+    console.log(file.status,file,file===fileList[fileList.length-1]);
+    // 一旦上传成功,将当前上传的file的选择修正(name,url)
+    if(file.status === "done"){
+      const result = file.response; // {status:0,data:{name:"xxx.jpg",url:"图片地址"}}
+      if(result.status === 0){
+        message.success("上传图片成功");
+        const {name,url} = result.data;
+        file.name = name;
+        file.url = url;
+      }
+      else{
+        message.error("上传图片失败");
+      }
+    }
     this.setState({ fileList });
+  }
+
+  // 获取所有已上传图片文件名的数组
+  getImgs = () => {
+    return this.state.fileList.map(file => file.name);
   }
 
   render() {
@@ -79,7 +94,7 @@ export default class PicturesWall extends Component {
           onPreview={this.handlePreview}
           onChange={this.handleChange}
         >
-          {fileList.length >= 8 ? null : uploadButton}
+          {fileList.length >= 3 ? null : uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}
@@ -94,3 +109,8 @@ export default class PicturesWall extends Component {
   }
 }
 
+
+/**
+ * 1. 子组件调用父组件的方法: 将父组件的方法以函数属性的行视传递给子组件,子组件就可以调用
+ * 2. 父组件调用子组件的方法: 在父组件中通过ref得到子组件标签对象(也就是组件对象),调用其方法
+ */

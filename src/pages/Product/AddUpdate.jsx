@@ -11,13 +11,26 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import {reqCategorys} from "../../api/index";
 // 引入照片墙组件
 import PicturesWall from './PicturesWall';
+// 引入富文本编辑器组件
+import RichTextEditor from './RichTextEditor';
 
 export default class ProductAddUpdate extends Component {
+  // eslint-disable-next-line no-useless-constructor
+  constructor(props){
+    super(props);
+    // 创建用来保存ref标识的标签对象的容器
+    this.pw = React.createRef();
+    this.editor = React.createRef();
+  }
   state = {
     options: [],
   }
   
   onFinish = (values) => {
+    const imgs = this.pw.current.getImgs();
+    const detail = this.editor.current.getDetail();
+    values.imgs = imgs;
+    values.detail = detail;
     console.log('获取数据成功:', values);
   };
 
@@ -129,7 +142,7 @@ export default class ProductAddUpdate extends Component {
 
   render() {
     const {isUpdate,product} = this;
-    const {pCategoryId,categoryId} = product;
+    const {pCategoryId,categoryId,imgs,detail} = product;
     // 用来接受级联分类ID的数组
     const categoryIds = [];
     if(isUpdate){
@@ -203,11 +216,16 @@ export default class ProductAddUpdate extends Component {
         </Form.Item>
 
         <Form.Item label="商品图片">
-          <PicturesWall></PicturesWall>
+          <PicturesWall ref={this.pw} imgs={imgs} ></PicturesWall>
         </Form.Item>
-
-        <Form.Item label="商品详情">
-          <div>商品详情</div>
+        {/* 商品详情 */}
+        <Form.Item 
+          label="商品详情"
+          labelCol={{span: 2}}
+          wrapperCol={{span: 20}}  
+          detail = {detail}
+        >
+          <RichTextEditor ref={this.editor}></RichTextEditor>
         </Form.Item>
 
         <Form.Item>

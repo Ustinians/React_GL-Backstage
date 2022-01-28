@@ -248,6 +248,16 @@ this.props.history.push(path,[state])
 
    特点: 一次发多个请求,只有当所有请求都成功,才成功,并得到成功的数据,一旦有一个失败,就无法得到成功的数据
 
+### 添加/更新商品 富文本编辑器
+
+* 下载依赖
+
+  ```yarn
+  yarn add react-draft-wysiwtg draftjs-to-html
+  ```
+
+* 
+
 ## 后台应用
 
 
