@@ -4,11 +4,12 @@ import {
   Form, 
   Input, 
   Cascader, // 级联选择
-  Button
+  Button,
+  message
 } from "antd";
 import { ArrowLeftOutlined } from '@ant-design/icons';
 // 引入请求函数
-import {reqCategorys} from "../../api/index";
+import {reqCategorys, reqAddProduct, reqUpdateProduct} from "../../api/index";
 // 引入照片墙组件
 import PicturesWall from './PicturesWall';
 // 引入富文本编辑器组件
@@ -26,12 +27,36 @@ export default class ProductAddUpdate extends Component {
     options: [],
   }
   
-  onFinish = (values) => {
+  onFinish = async (values) => {
+    // 1. 收集数据,并封装成product对象
+    const {name,desc,price,categoryIds} = values;
     const imgs = this.pw.current.getImgs();
     const detail = this.editor.current.getDetail();
-    values.imgs = imgs;
-    values.detail = detail;
-    console.log('获取数据成功:', values);
+    let pCategoryId,categoryId;
+    if(categoryIds.length === 1){
+      pCategoryId = "0";
+      categoryId = categoryIds[0];
+    }
+    else{
+      pCategoryId = categoryIds[0];
+      categoryId = categoryIds[1];
+    }
+    const product = {name,desc,price,imgs,detail,pCategoryId,categoryId};
+    let result;
+    // 2. 调用接口请求函数去添加/更新
+    // 如果是更新,需要添加_id
+    if(this.isUpdate){
+      product._id = this.product._id;
+      result = await reqUpdateProduct(product);
+    }
+    else{
+      result = await reqAddProduct(product);
+    }
+    // 3. 根据结果提示
+    console.log(result);
+    if(result.status === 0){
+      message.success("更新数据成功");
+    }
   };
 
   onFinishFailed = (errorInfo) => {
@@ -207,7 +232,7 @@ export default class ProductAddUpdate extends Component {
         </Form.Item>
         {/* 商品分类 */}
         <Form.Item 
-          name="classify" 
+          name="categoryIds" 
           label="商品分类" 
           initialValue={categoryIds}
           rules={[{ required: true, message: '必须指定商品分类!' }]} 

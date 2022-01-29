@@ -42,3 +42,9 @@ export const reqCategory = (categoryId) => ajax("/manage/category/info",{categor
 
 // 更新商品的状态(上架/下架)
 export const reqUpdateStatus = (productId,status) => ajax("/manage/product/updateStatus",{productId,status},"POST");
+
+// 添加商品
+export const reqAddProduct = (product) => ajax("/manage/product/add",product,"POST");
+
+// 更新商品
+export const reqUpdateProduct = (product) => ajax("/manage/product/update",product,"POST");
