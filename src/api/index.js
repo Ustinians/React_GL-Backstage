@@ -48,3 +48,9 @@ export const reqAddProduct = (product) => ajax("/manage/product/add",product,"PO
 
 // 更新商品
 export const reqUpdateProduct = (product) => ajax("/manage/product/update",product,"POST");
+
+// 获取所有角色信息的列表
+export const reqRoles = () => ajax("/manage/role/list");
+
+// 添加角色信息
+export const reqAddRole = (roleName) => ajax("/manage/role/add",{roleName},"POST");
