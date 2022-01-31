@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
@@ -17,7 +17,7 @@ export default class RichTextEditor extends Component {
       // 如果有值,根据html格式字符串创建一个对应的编辑对象
       const contentBlock = htmlToDraft(detail);
       if(contentBlock){
-        const contentState = contentBlock.createFromBlockArray(contentBlock.contentBlocks);
+        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
         const editorState = EditorState.createWithContent(contentState);
         this.state = {
           editorState

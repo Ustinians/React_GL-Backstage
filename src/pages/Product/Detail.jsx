@@ -70,8 +70,14 @@ export default class ProductDetail extends Component {
           <span className='left'>商品图片:</span>
           {
             product.imgs.length === 0 ? (<span>暂无图片</span>) : (<span>
-            <img className='product-img' src='https://c-ssl.duitang.com/uploads/blog/202109/14/20210914224011_ed257.jpg' alt='img'></img>
-            <img className='product-img' src='https://c-ssl.duitang.com/uploads/blog/202109/14/20210914224011_ed257.jpg' alt='img'></img>
+            {
+              product.imgs.map(item => (<img 
+                alt={item} 
+                key={item} 
+                src={`http://localhost:5000/upload/${item}`}
+                style={{height:80}}  
+              ></img>))
+            }
           </span>)
           }
         </List.Item>
@@ -79,7 +85,7 @@ export default class ProductDetail extends Component {
           <span className='left'>商品详情:</span>
           {/* dangerouslySetInnerHTML: 渲染html元素 */}
           {
-            product.detail ? (<span dangerouslySetInnerHTML={{__html: '<h1>你好!</h1>'}}></span>) : (<span>暂无详情</span>)
+            product.detail ? (<span dangerouslySetInnerHTML={{__html: product.detail}}></span>) : (<span>暂无详情</span>)
           }
         </List.Item>
       </List>

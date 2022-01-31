@@ -25,7 +25,7 @@ export default class PicturesWall extends Component {
         uid: -index,
         name: img,
         status: "done",
-        url: "http://localhost:5000/manage/img/upload" + img
+        url: "http://localhost:5000/upload/" + img
       }))
     }
     this.state = {

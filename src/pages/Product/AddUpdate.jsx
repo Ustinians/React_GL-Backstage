@@ -55,7 +55,8 @@ export default class ProductAddUpdate extends Component {
     // 3. 根据结果提示
     console.log(result);
     if(result.status === 0){
-      message.success("更新数据成功");
+      message.success(`${ this.isUpdate ? "更新" : "添加" }商品成功`);
+      this.props.history.goBack();
     }
   };
 
@@ -248,9 +249,11 @@ export default class ProductAddUpdate extends Component {
           label="商品详情"
           labelCol={{span: 2}}
           wrapperCol={{span: 20}}  
-          detail = {detail}
         >
-          <RichTextEditor ref={this.editor}></RichTextEditor>
+          <RichTextEditor 
+            detail={detail} 
+            ref={this.editor}
+          ></RichTextEditor>
         </Form.Item>
 
         <Form.Item>
