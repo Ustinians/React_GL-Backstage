@@ -45,8 +45,8 @@ export default class Admin extends Component {
                         <Content style={{backgroundColor:"#fff",margin:"20px"}}>
                             <Switch>
                                 <Route path="/home" component={Home}></Route>
-                                <Route path="/category" component={Category}></Route>
-                                <Route path="/product" component={Product}></Route>
+                                <Route path="/products/category" component={Category}></Route>
+                                <Route path="/products/product" component={Product}></Route>
                                 <Route path="/user" component={User}></Route>
                                 <Route path="/role" component={Role}></Route>
                                 <Route path="/charts/bar" component={Bar}></Route>

@@ -54,3 +54,9 @@ export const reqRoles = () => ajax("/manage/role/list");
 
 // 添加角色信息
 export const reqAddRole = (roleName) => ajax("/manage/role/add",{roleName},"POST");
+
+// 更新角色权限
+export const reqUpdateRole = (role) => ajax("/manage/role/update",role,"POST");
+
+// 获取用户列表
+export const reqUsers = () => ajax("/manage/user/list");

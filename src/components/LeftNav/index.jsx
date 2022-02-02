@@ -21,7 +21,7 @@ class LeftNav extends Component {
   showMenuList = (menu) => {
     return menu.map(item => {
       // 如果没有子菜单项
-      if(!item.child){
+      if(!item.children){
         return (
           <Menu.Item key={item.path} icon={item.icon}>
             <Link to={item.path}>{item.title}</Link>
@@ -31,14 +31,14 @@ class LeftNav extends Component {
       else{
         const path = this.props.location.pathname;
         // 当路由路径中包含该路径,展开该列表
-        const cItem = item.child.find(cItem => path.indexOf(cItem.path) === 0);
+        const cItem = item.children.find(cItem => path.indexOf(cItem.path) === 0);
         if(cItem){
           // 如果存在,说明当前item所对应的子列表需要打开
-          this.openKey = item.id;
+          this.openKey = item.key;
         }
         return (
-          <SubMenu key={item.id} icon={item.icon} title={item.title}>
-            {this.showMenuList(item.child)}
+          <SubMenu key={item.key} icon={item.icon} title={item.title}>
+            {this.showMenuList(item.children)}
           </SubMenu>
         );
       }
@@ -76,9 +76,9 @@ class LeftNav extends Component {
   render() {
     // 获取当前路径
     let {pathname} = this.props.location;
-    if(pathname.indexOf("/product") === 0){
+    if(pathname.indexOf("/products/product") === 0){
       // 当前请求的是商品或者其子路由
-      pathname = "/product";
+      pathname = "/products/product";
     }
     return <div className='left-nav'>
       <Link to="/home">

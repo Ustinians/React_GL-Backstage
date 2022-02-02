@@ -256,7 +256,49 @@ this.props.history.push(path,[state])
   yarn add react-draft-wysiwtg draftjs-to-html
   ```
 
-* 
+
+### setState()
+
+#### setState()的使用
+
+`setState()`更新状态的两种写法
+
+1. `setState(updater,[callback])`
+
+   `updater`为返回`stateChange`对象的函数: `(state,props) => stateChange`接受的`state`和`props`被保证为最新的
+
+2. `setState(stateChange,[callback])`
+
+   `stateChange`为对象
+
+   `callback`是可选的回调函数,在状态更新且界面更新后才执行
+
+总结: 
+
+​	对象方式是函数方式的简写方式
+
+​		如果新状态不依赖于原状态 ==> 使用对象方式
+
+​		如果新状态依赖于原状态 ==> 使用函数方式
+
+​	如果需要在`setState()`后获取最新的状态数据,在第二个`callback`函数中读取
+
+```jsx
+state = {
+    count: 1
+}
+
+test1 = () => {
+    this.setState(state => ({count: state.count+1}))
+}
+
+test2 = () => {
+    const {count} = this.state;
+    this.setState({count: count+1});
+}
+```
+
+
 
 ## 后台应用
 

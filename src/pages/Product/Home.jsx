@@ -59,10 +59,10 @@ export default class ProductHome extends Component {
                         <span>
                             <a 
                                 href='jacascript:;' 
-                                onClick={() => {this.props.history.push("/product/detail",{product})}} 
+                                onClick={() => {this.props.history.push("/products/product/detail",{product})}} 
                             >详情</a>
                             <br />
-                            <a href='jacascript:;' onClick={() => this.props.history.push("/product/addupdate",product)}>修改</a>
+                            <a href='jacascript:;' onClick={() => this.props.history.push("/products/product/addupdate",product)}>修改</a>
                         </span>
                     )
                 }
