@@ -3,6 +3,7 @@ import {Card, Button, Table, message, Modal, Form, Input, Tree} from "antd";
 import {reqRoles,reqAddRole,reqUpdateRole} from "../../api/index";
 // import { formateDate } from "../../utils/dateUtils";
 import memoryUtils from "../../utils/memoryUtils";
+import {formateDate} from "../../utils/dateUtils";
 
 export default class Role extends Component {
   state = {
@@ -69,11 +70,13 @@ export default class Role extends Component {
         title: '创建时间',
         dataIndex: 'create_time',
         key: 'create_time',
+        render: create_time => formateDate(create_time)
       },
       {
         title: '授权时间',
         dataIndex: 'auth_time',
         key: 'auth_time',
+        render: auth_time => formateDate(auth_time)
       },
       {
         title: '授权人',

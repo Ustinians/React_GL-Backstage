@@ -60,3 +60,6 @@ export const reqUpdateRole = (role) => ajax("/manage/role/update",role,"POST");
 
 // 获取用户列表
 export const reqUsers = () => ajax("/manage/user/list");
+
+// 删除指定用户
+export const reqDeleteUser = (userId) => ajax("/manage/user/delete",{userId},"POST");

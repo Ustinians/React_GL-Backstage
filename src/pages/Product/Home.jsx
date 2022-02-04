@@ -137,7 +137,7 @@ export default class ProductHome extends Component {
             <Button type="primary" onClick={() => {this.getProducts("1")}}>搜索</Button>
         </div>)
         const extra = (
-            <Button type="primary" onClick={() => this.props.history.push("/product/addupdate")}>
+            <Button type="primary" onClick={() => this.props.history.push("/products/product/addupdate")}>
                 <PlusOutlined />
                 <span>添加商品</span>
             </Button>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Card, Table, Button, message, Modal,Form,Select,Input } from "antd";
 import { PlusOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import "./index.css";
@@ -6,7 +6,7 @@ import "./index.css";
 import { reqCategorys,reqAddCategory,reqUpdateCategory } from "../../api/index";
 
 
-export default class Category extends Component {
+export default class Category extends PureComponent {
   state = {
     loading: false, // 是否展示加载动画
     categorys: [],
