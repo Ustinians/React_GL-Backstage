@@ -13,11 +13,29 @@ import memoryUtils from "../../utils/memoryUtils";
 const { SubMenu } = Menu;
 
 class LeftNav extends Component {
+  // 判断当前登录用户权限菜单中是否包含当前项
+  hasAuth = (item) => {
+    const key = item.key;
+    const menus = memoryUtils.user.role.menus;
+    const username = memoryUtils.user.username;
+    // 1. 如果当前用户是admin(超级管理用户) --> 直接通过
+    // 2. 如果当前item是公开的(isPublic为true) --> 通过√
+    // 3. 如果当前用户有此item的权限
+    if(username === "admin" || item.isPublic || menus.indexOf(key) !== -1){
+      return true;
+    }
+    else if(item.children){
+      // 4. 如果当前用户有此item的某个子item的权限
+      return !!item.children.find(child => menus.indexOf(child.key) !== -1); // 强制返回为布尔值
+    }
+    return false;
+  }
   // 展示菜单列表
   /**
    * 根据menu的数据数组生成对应的标签数组
    * 使用 map() + 递归
    */
+  /*
   showMenuList = (menu) => {
     return menu.map(item => {
       // 如果没有子菜单项
@@ -44,32 +62,35 @@ class LeftNav extends Component {
       }
     })
   }
+  */
   /**
    * 根据menu的数据数组生成对应的标签数组
    * 使用 reduce() + 递归
    */
-  /*
+  
   showMenuList = (menu) => {
     return menu.reduce((pre,item) => {
       // 向pre添加<Menu.Item>或者<SubMenu>
-      if(!item.child){
-        pre.push((
-          <Menu.Item key={item.path} icon={item.icon}>
-            <Link to={item.path}>{item.title}</Link>
-          </Menu.Item>
-        ))
-      }
-      else{
-        pre.push((
-          <SubMenu key={item.id} icon={item.icon} title={item.title}>
-            {this.showMenuList(item.child)}
-          </SubMenu>
-        ))
+      if(this.hasAuth(item)){
+        if(!item.children){
+          pre.push((
+            <Menu.Item key={item.path} icon={item.icon}>
+              <Link to={item.path}>{item.title}</Link>
+            </Menu.Item>
+          ))
+        }
+        else{
+          pre.push((
+            <SubMenu key={item.id} icon={item.icon} title={item.title}>
+              {this.showMenuList(item.children)}
+            </SubMenu>
+          ))
+        }
       }
       return pre;
     },[])
   }
-  */
+  
   UNSAFE_componentWillMount(){
     this.menuNodes = this.showMenuList(memoryUtils.menu);
   }

@@ -3,6 +3,7 @@ import {Card, Button, Table, message, Modal, Form, Input, Tree} from "antd";
 import {reqRoles,reqAddRole,reqUpdateRole} from "../../api/index";
 // import { formateDate } from "../../utils/dateUtils";
 import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
 import {formateDate} from "../../utils/dateUtils";
 
 export default class Role extends Component {
@@ -110,6 +111,9 @@ export default class Role extends Component {
     const name = this.addf.current.getFieldValue("name"); // 获取到name属性
     // console.log(name);
     const result = await reqAddRole(name);
+    this.setState({
+      showStatus: 0
+    })
     if(result.status === 0){
       message.success("添加角色成功!");
       this.setState({
@@ -125,12 +129,26 @@ export default class Role extends Component {
   // 设置角色权限
   setRole = async () => {
     const {role,checkedKeys} = this.state;
+    const user = memoryUtils.user;
     role.menus = checkedKeys;
+    role.auth_name = user.username;
     // 更新角色权限
     const result = await reqUpdateRole(role);
     console.log(result);
+    this.setState({
+      showStatus: 0
+    })
     if(result.status === 0){
       message.success("更新角色权限成功!");
+      // 如果当前更新的是自己角色的权限,强制退出
+      if(role._id === memoryUtils.user.role_id){
+        memoryUtils.user = {};
+        storageUtils.removeUser();
+        this.props.history.replace("/login");
+      }
+      else{
+        this.getRoles();
+      }
     }
     else{
       message.error("更新角色权限失败!");

@@ -8,9 +8,6 @@ import ajax from "./ajax";
 // 登录接口
 export const reqLogin = (username,password) => ajax("/login",{username,password},"POST");
 
-// 添加用户接口
-export const reqAddUser = (user) => ajax("/manage/user/add",user,"POST");
-
 // "品类管理" GET请求函数 获取一级/二级分类列表
 export const reqCategorys = (parentId) => ajax("/manage/category/list",{parentId});
 
@@ -63,3 +60,9 @@ export const reqUsers = () => ajax("/manage/user/list");
 
 // 删除指定用户
 export const reqDeleteUser = (userId) => ajax("/manage/user/delete",{userId},"POST");
+
+// 添加用户
+export const reqAddUser = (user) => ajax("/manage/user/add",user,"POST");
+
+// 添加/更新用户
+export const reqAddOrUpdateUser = (user) => ajax('/manage/user/'+(user._id?'update':'add'),user,'POST')

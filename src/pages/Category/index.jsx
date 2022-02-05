@@ -4,6 +4,7 @@ import { PlusOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import "./index.css";
 
 import { reqCategorys,reqAddCategory,reqUpdateCategory } from "../../api/index";
+import LinkButton from '../../components/LinkButton';
 
 
 export default class Category extends PureComponent {
@@ -37,10 +38,10 @@ export default class Category extends PureComponent {
           const _this = this;
           return (
             <div className='category-action'>
-              <a href='javascrip:' onClick={() => {_this.showUpdate(category)}}>修改分类</a>
+              <LinkButton onClick={() => {_this.showUpdate(category)}}>修改分类</LinkButton>
               {/* 如何向事件回调函数传递参数:先定义一个匿名函数,在函数调用处理的函数并传入数据 */}
               {
-                _this.state.parentId === '0' ? <a href='javascrip:' onClick={() => {this.showSubCategorys(category)}}>查看子分类</a> : null
+                _this.state.parentId === '0' ? <LinkButton onClick={() => {this.showSubCategorys(category)}}>查看子分类</LinkButton> : null
               }
             </div>
           )

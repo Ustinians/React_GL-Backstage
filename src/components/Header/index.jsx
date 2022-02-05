@@ -3,6 +3,7 @@ import {withRouter} from "react-router-dom";
 import "./index.css"
 import { message, Modal } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import LinkButton from "../../components/LinkButton"
 
 import memoryUtils from "../../utils/memoryUtils";
 import { formateDate } from "../../utils/dateUtils";
@@ -95,7 +96,7 @@ class Header extends Component {
     return <div className='header'>
       <div className="header-top">
         <span>欢迎, {username}</span>
-        <a href='javascrip:' onClick={this.isExit}>退出</a>
+        <LinkButton onClick={this.isExit}>退出</LinkButton>
       </div>
       <div className="header-bottom">
         <div className='header-bottom-left'>{this.getNowTitle()}</div>

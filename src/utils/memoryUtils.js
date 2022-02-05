@@ -22,7 +22,8 @@ export default {
             key: "/home",
             title: "首页",
             path: "/home",
-            icon: <HomeOutlined />
+            icon: <HomeOutlined />,
+            isPublic: true, // 对所有用户可见
         },
         {
             key: "/products",
