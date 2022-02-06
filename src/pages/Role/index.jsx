@@ -191,7 +191,15 @@ export default class Role extends Component {
           onRow={this.onRow} // 点击某一行时的回调函数
           dataSource={roles}
           columns={this.columns}
-          rowSelection={{type:"radio",selectedRowKeys:[role._id]}}
+          rowSelection={{
+            type:"radio",
+            selectedRowKeys:[role._id],
+            onSelect: (role) => {
+              this.setState({
+                role
+              })
+            }  
+          }}
           pagination={{ defaultPageSize: 5, showQuickJumper: true }} // 设置默认每页的列数
         ></Table>
         {/* 添加角色 */}
